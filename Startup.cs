@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moldovan_Andrea__Lab2.Data;
 using Microsoft.EntityFrameworkCore;
+using Moldovan_Andrea__Lab2.Hubs;
 
 namespace Moldovan_Andrea__Lab2 
 {
@@ -27,6 +28,7 @@ namespace Moldovan_Andrea__Lab2
         {
             services.AddControllersWithViews();
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +56,8 @@ namespace Moldovan_Andrea__Lab2
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapHub<ChatHub>("/chathub");
+
             });
         }
     }

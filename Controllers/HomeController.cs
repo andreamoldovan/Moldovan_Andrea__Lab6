@@ -35,14 +35,18 @@ namespace Moldovan_Andrea__Lab2.Controllers
             };
             return View(await data.AsNoTracking().ToListAsync());
         }
-
-      /*  private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public IActionResult Chat()
         {
-            _logger = logger;
+            return View();
         }
-        */
+
+        /*  private readonly ILogger<HomeController> _logger;
+
+          public HomeController(ILogger<HomeController> logger)
+          {
+              _logger = logger;
+          }
+          */
 
         public IActionResult Index()
         {
