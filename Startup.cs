@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Moldovan_Andrea__Lab2.Data;
 using Microsoft.EntityFrameworkCore;
 using Moldovan_Andrea__Lab2.Hubs;
+using Microsoft.AspNetCore.Identity;
 
 namespace Moldovan_Andrea__Lab2 
 {
@@ -29,7 +30,15 @@ namespace Moldovan_Andrea__Lab2
             services.AddControllersWithViews();
             services.AddDbContext<LibraryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSignalR();
-        }
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan =TimeSpan.FromMinutes(5);
+                options.Lockout.AllowedForNewUsers = true;
+            }); 
+            services.Configure<IdentityOptions>(options => { options.Password.RequiredLength = 8; });
+            }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,6 +58,7 @@ namespace Moldovan_Andrea__Lab2
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -57,6 +67,7 @@ namespace Moldovan_Andrea__Lab2
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                     endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapRazorPages();
 
             });
         }
